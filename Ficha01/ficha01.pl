@@ -27,7 +27,7 @@ descendente(X,Y):-filho(X,A),descendente(A,Y).
 grauDesc(X,Y,1):-filho(X,Y).
 grauDesc(X,Y,N):-filho(X,Z),grauDesc(Z,Y,G),N is G+1.
 
-avoGrau(A,N):-grauDesc(A,N,2).
+avoGrau(A,N):-grauDesc(N,A,2).
 
 bisavo(X,Y):-grauDesc(X,Y,3).
 
