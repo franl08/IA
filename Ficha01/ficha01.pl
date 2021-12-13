@@ -1,34 +1,41 @@
-filho(joao,jose).
-filho(jose,manuel).
-filho(carlos,jose).
+filho(joao, jose).
+filho(jose, manuel).
+filho(carlos, jose).
+:-discontiguous filho/2.
 
-pai(paulo,filipe).
-pai(paulo,maria).
+pai(paulo, filipe).
+pai(paulo, maria).
+:-discontiguous pai/2.
 
-pai(P,F):-filho(F,P).
 
-avo(antonio,nadia).
+avo(antonio, nadia).
+:-discontiguous avo/2.
 
-avo(A,N):-filho(X,A),filho(N,X).
 
-neto(nuno,ana).
+neto(nuno, ana).
+:-discontiguous neto/2.
 
-neto(N,A):-avo(A,N).
 
-masc(joao).
-masc(jose).
+masculino(joao).
+masculino(jose).
 
-fem(maria).
-fem(joana).
+feminino(maria).
+feminino(joana).
 
-descendente(X,Y):-filho(X,Y).
-descendente(X,Y):-filho(X,A),descendente(A,Y).
+pai(X, Y) :- filho(Y, X).
 
-grauDesc(X,Y,1):-filho(X,Y).
-grauDesc(X,Y,N):-filho(X,Z),grauDesc(Z,Y,G),N is G+1.
+avo(A, N) :- filho(N, X) , pai(A, X).
+avo(A, N) :- descendente(N, A, 2).
 
-avoGrau(A,N):-grauDesc(N,A,2).
+bisavo(B, N) :- descendente(N, B, 3).
 
-bisavo(X,Y):-grauDesc(X,Y,3).
+trisavo(T, N) :- descendente(N, T, 3).
 
-trisavo(X,Y):-grauDesc(X,Y,4).
+neto(N, A) :- avo(A, N).
+
+descendente(X, Y) :- filho(X, Y).
+descendente(X, Y) :- filho(X, A) , descendente(A, Y).
+
+descendente(X, Y, 1) :- filho(X, Y).
+descendente(X, Y, R) :- filho(X, A) , descendente(A, Y, N), R is N + 1.
+

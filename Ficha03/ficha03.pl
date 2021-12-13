@@ -1,32 +1,33 @@
-pertence(X,[X|Y]).
-pertence(X,[Y|Z]) :- X \= Y , pertence(X,Z).
+pertence(X, [X|_]).
+pertence(X, [_|T]) :- pertence(X, T).
 
+comprimento([], 0).
+comprimento([_|T], R) :- comprimento(T, N), R is N + 1.
 
-comprimento([],0).
-comprimento([_|L],N) :- comprimento(L, X) , N is X + 1.
+diferentes([], 0).
+diferentes([H|T], R) :- pertence(H, T), diferentes(T, R).
+diferentes([H|T], R) :- not(pertence(H, T)), diferentes(T, N), R is N + 1.
 
-diferentes([],0).
-diferentes([X|L], N) :- pertence(X,L), diferentes(L, N).
-diferentes([X|L], N) :- diferentes(L, AC), N is AC + 1.
+apaga1(_, [], []).
+apaga1(X, [X|T], T).
+apaga1(X, [H|T], [H|L]) :- X =\= H, apaga1(X, T, L).
 
-apaga1(X,[],[]).
-apaga1(X,[X|T],T).
-apaga1(X,[Y|T],[Y|T1]) :- apaga1(X,T,T1).
+apagaT(_, [], []).
+apagaT(X, [X|T], L) :- apagaT(X, T, L).
+apagaT(X, [H|T], [H|L]) :- X =\= H, apagaT(X, T, L).
 
-apagaT(X,[],[]) :- !.
-apagaT(X,[X|T],Y) :- !, apagaT(X,T,Y).
-apagaT(X,[Y|T],Z) :!, apagaT(X,T,Z2),append([Y],Z2,Z).
+adicionar(X, L, [X|L]) :- not(pertence(X, L)).
+adicionar(X, L, L) :- pertence(X, L).
 
-adicionar(X,L,L) :- pertence(X,L).
-adicionar(X,L,[X|L]) :- !.
+concatenar(L1, [], L1).
+concatenar([], L2, L2).
+concatenar([H|T], L2, [H|L1]) :- concatenar(T, L2, L1).
 
-concatenar([],L,L).
-concatenar([X|L1],L2,[X|L3]) :- concatenar(L1,L2,L3).
+inverter([], []).
+inverter([H|T], L3) :- inverter(T, L2), concatenar(L2, [H], L3).
 
-inverter([],[]).
-inverter([X],[X]).
-inverter([[X|XS],R]) :- inverter(XS,T),append(T,[X],R).
+prefixo([], _).
+prefixo([H|L1], [H|L2]) :- sublista(L1, L2).
 
-sublist([],[]).
-sublist([X|T],[X|T1]) :- sublist(T,T1).
-sublist([_|T], T1) :- sublist(T,T1).
+sublista(L1, L2) :- prefixo(L1, L2).
+sublista(L1, [_|T]) :- sublista(L1, T).  
